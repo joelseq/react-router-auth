@@ -1,0 +1,45 @@
+version: 2
+jobs:
+  test:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+
+      # Download and restore cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+        
+      # run tests!
+      - run: yarn test
+
+  release:
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - run: yarn install
+      # Build project
+      - run: yarn build
+      # Release new version
+      - run: npx semantic-release
+
+workflows:
+  version: 2
+  test_and_release:
+    # Run the test job first, then release only when the test job is successful
+    jobs:
+      - test
+      - release:
+          requires:
+            - test
