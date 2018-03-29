@@ -31,6 +31,8 @@ jobs:
       - run: yarn install
       # Build project
       - run: yarn build
+      # Run tests for code coverage
+      - run: yarn test:cov && codecov
       # Release new version
       - run: npx semantic-release
 
