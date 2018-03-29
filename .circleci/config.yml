@@ -32,7 +32,7 @@ jobs:
       # Build project
       - run: yarn build
       # Run tests for code coverage
-      - run: yarn test:cov && codecov
+      - run: yarn test:cov && yarn codecov
       # Release new version
       - run: npx semantic-release
 
