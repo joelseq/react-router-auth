@@ -79,5 +79,12 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  }
+  },
+  "keywords": [
+    "react",
+    "router",
+    "auth",
+    "authentication",
+    "react router auth"
+  ]
 }
