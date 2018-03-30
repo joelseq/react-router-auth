@@ -80,6 +80,44 @@ In this example, if the user is authenticated while they try to access the `logi
 | redirectTo    | string          | The route to redirect the user to if authenticated |
 | component     | React Component | The component that requires authentication         |
 
+### Usage with Redux
+
+The easiest way to use these components with Redux is by creating your own components to wrap the components from this library with Redux's `connect` HOC and passing in `authenticated` as a prop.
+
+Example:
+
+```jsx
+// ConnectedAuthRoute.js
+import { connect } from 'react-redux'
+import { AuthRoute } from 'react-router-auth'
+
+const mapStateToProps = state => ({
+  // In this example the auth reducer has a key
+  // called authenticated which determines if the
+  // user is authenticated or not
+  authenticated: state.auth.authenticated, 
+})
+
+export default connect(mapStateToProps)(AuthRoute)
+```
+
+Now if you want to use this in any of your components, you don't need to pass in the authenticated prop as the component is already hooked up to determine the authenticated state from the Redux store.
+
+```jsx
+import React, { Component } from 'react'
+import UserProfile from './UserProfile'
+// Import our connected AuthRoute component
+import ConnectedAuthRoute from './ConnectedAuthRoute'
+
+class Example extends Component {
+  render () {
+    return (
+      {/* we don't need to pass in the authenticated prop anymore */}
+      <ConnectedAuthRoute path="/profile" component={UserProfile} redirectTo="/login" />
+    )
+  }
+}
+```
 
 ## License
 
